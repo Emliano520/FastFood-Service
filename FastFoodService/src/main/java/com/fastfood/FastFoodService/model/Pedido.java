@@ -2,17 +2,22 @@ package com.fastfood.FastFoodService.model;
 
 public class Pedido {
 
+    // Constantes para los estados del pedido
+    public static final String REGISTRADO = "REGISTRADO";
+    public static final String EN_PREPARACION = "EN_PREPARACION";
+    public static final String DESPACHADO = "DESPACHADO";
+    public static final String CANCELADO = "CANCELADO";
+
     private int id;
     private String nombreCliente;
     private String descripcion;
     private double monto;
     private String estado;
 
-    public Pedido(){
+    public Pedido() {
     }
 
     public Pedido(int id, String nombreCliente, String descripcion, double monto, String estado) {
-
         this.id = id;
         this.nombreCliente = nombreCliente;
         this.descripcion = descripcion;
@@ -71,3 +76,4 @@ public class Pedido {
                 '}';
     }
 }
+
