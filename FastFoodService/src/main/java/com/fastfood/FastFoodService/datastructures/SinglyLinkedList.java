@@ -2,6 +2,9 @@ package com.fastfood.FastFoodService.datastructures;
 
 import com.fastfood.FastFoodService.model.Pedido;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SinglyLinkedList {
 
     // Clase interna para los nodos (simple: id para búsqueda rápida, data para el pedido, next para el siguiente nodo)
@@ -102,4 +105,29 @@ public class SinglyLinkedList {
         list.removeById(1);
         System.out.println("Después de eliminar: " + list);
     }
+
+    // Metodo para obtener todos los pedidos como una lista (temporal, para devolver en respuestas)
+    public List<Pedido> getAll() {
+        List<Pedido> list = new ArrayList<>();
+        Node current = head;
+        while (current != null) {
+            list.add(current.data);
+            current = current.next;
+        }
+        return list;
+    }
+
+    // Metodo recursivo para sumar los montos de todos los pedidos
+    public double sumRecursivo(Node node) {
+        if (node == null) {
+            return 0;  // Caso base: si no hay nodo, suma 0
+        }
+        return node.data.getMonto() + sumRecursivo(node.next);  // Suma el monto actual + recursión al siguiente
+    }
+
+    // Metodo para obtener el head (necesario para el cálculo recursivo)
+    public Node getHead() {
+        return head;
+    }
+
 }
