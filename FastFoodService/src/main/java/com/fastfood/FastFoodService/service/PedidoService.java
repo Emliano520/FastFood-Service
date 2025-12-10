@@ -57,12 +57,35 @@ public class PedidoService {
     public PedidoResponse cancelarPedido(int id) {
         Pedido pedido = pedidosLista.findById(id);
         if (pedido == null) return null;
-        Pedido copiaAntes = new Pedido(pedido.getId(), pedido.getNombreCliente(), pedido.getDescripcion(), pedido.getMonto(), pedido.getEstado());
+
+        // Copia del estado ANTES
+        Pedido copiaAntes = new Pedido(
+                pedido.getId(),
+                pedido.getNombreCliente(),
+                pedido.getDescripcion(),
+                pedido.getMonto(),
+                pedido.getEstado()
+        );
+
+        // Cambiar estado en la lista
         pedido.setEstado(Pedido.CANCELADO);
-        // Remover de cola (agrega en Queue: public void removeById(int id) { ... itera y remueve })
+
+        // Sacar de la cola
+        pedidosCola.removeById(id);
+
+        // Guardar operación en la pila
         historial.push(new HistorialOperacion("CANCELAR", copiaAntes, pedido));
-        return new PedidoResponse(pedido.getId(), pedido.getNombreCliente(), pedido.getDescripcion(), pedido.getMonto(), pedido.getEstado());
+
+        // Respuesta
+        return new PedidoResponse(
+                pedido.getId(),
+                pedido.getNombreCliente(),
+                pedido.getDescripcion(),
+                pedido.getMonto(),
+                pedido.getEstado()
+        );
     }
+
 
     // Despachar (sacar de cola y cambiar estado)
     public PedidoResponse despacharPedido() {

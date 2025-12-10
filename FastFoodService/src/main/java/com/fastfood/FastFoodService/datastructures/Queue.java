@@ -41,6 +41,39 @@ public class Queue {
         return pedido;
     }
 
+    public void removeById(int id) {
+        if (isEmpty()) return;
+
+        int newSize = 0;
+        Pedido[] newQueue = new Pedido[capacity];
+
+        for (int i = 0; i < size; i++) {
+            int index = (front + i) % capacity;
+            if (queue[index].getId() != id) {
+                newQueue[newSize++] = queue[index];
+            }
+        }
+
+        this.queue = newQueue;
+        this.front = 0;
+        this.rear = newSize - 1;
+        this.size = newSize;
+    }
+
+    public Pedido peek() {
+        if (isEmpty()) return null;
+        return queue[front];
+    }
+
+    public Pedido[] getAll() {
+        Pedido[] result = new Pedido[size];
+        for (int i = 0; i < size; i++) {
+            int index = (front + i) % capacity;
+            result[i] = queue[index];
+        }
+        return result;
+    }
+
     // Verificar si está vacía
     public boolean isEmpty() {
         return size == 0;

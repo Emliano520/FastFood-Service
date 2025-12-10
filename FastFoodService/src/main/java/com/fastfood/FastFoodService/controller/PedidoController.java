@@ -49,4 +49,41 @@ public class PedidoController {
         }
         return ResponseEntity.ok(Map.of("mensaje", "Pedido cancelado correctamente", "pedido", response));
     }
+
+    // PUT /api/pedidos/despachar (despacha el siguiente en cola)
+    @PutMapping("/despachar")
+    public ResponseEntity<PedidoResponse> despachar() {
+        PedidoResponse response = service.despacharPedido();
+        if (response == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    // GET /api/pedidos/estadisticas
+    @GetMapping("/estadisticas")
+    public ResponseEntity<Map<String, Object>> estadisticas() {
+        return ResponseEntity.ok(service.getEstadisticas());
+    }
+
+    // POST /api/pedidos/rollback (deshace la última operación)
+    @PostMapping("/rollback")
+    public ResponseEntity<PedidoResponse> rollback() {
+        PedidoResponse response = service.rollback();
+        if (response == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    // GET /api/pedidos/monto/total (suma recursiva de montos)
+    @GetMapping("/monto/total")
+    public ResponseEntity<Map<String, Object>> montoTotal() {
+        double total = service.calcularMontoTotalRecursivo();
+        return ResponseEntity.ok(Map.of(
+                "montoTotal", total
+        ));
+    }
+
+
 }
